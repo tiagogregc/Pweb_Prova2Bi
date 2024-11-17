@@ -228,3 +228,71 @@ main {
         font-size: 20px !important; /* Fonte ainda menor para dispositivos muito pequenos */
     }
 }
+
+/* Modal */
+.modal {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.5); /* Fundo escuro */
+    display: none; /* Inicialmente oculta */
+    justify-content: center;
+    align-items: center;
+}
+
+/* Caixa da modal */
+.modal-content {
+    background-color: #f8f9fa; /* Cor de fundo clara para a caixa */
+    padding: 20px;
+    border-radius: 10px;
+    width: 400px; /* Largura fixa */
+    max-width: 80%; /* Para ser responsivo */
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3); /* Sombra suave */
+    text-align: center;
+    font-size: 16px;
+}
+
+.modal-content h4 {
+    font-size: 18px;
+    margin-bottom: 15px;
+}
+
+.modal-content p {
+    font-size: 16px;
+    margin-bottom: 20px;
+}
+
+/* Botões */
+.modal-content .btn {
+    padding: 10px 20px;
+    font-size: 16px;
+    border: none;
+    border-radius: 5px;
+    margin-top: 10px;
+}
+
+.modal-content .btn-danger {
+    background-color: #d9534f;
+    color: white;
+}
+
+.modal-content .btn-primary {
+    background-color: #0275d8;
+    color: white;
+    text-decoration: none;
+}
+
+.modal-content .btn-danger:hover {
+    background-color: #c9302c;
+}
+
+.modal-content .btn-primary:hover {
+    background-color: #025aa5;
+}
+
+/* Para quando a modal estiver visível */
+.modal.show {
+    display: flex;
+}

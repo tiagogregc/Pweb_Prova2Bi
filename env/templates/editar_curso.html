@@ -14,13 +14,17 @@
             <div class="form-group">
                 <label>Disciplinas</label>
                 <div class="disciplinas-container">
-                    {% for disciplina in disciplinas %}
-                        <div class="disciplina-item">
-                            <input type="checkbox" id="disciplina_{{ disciplina[0] }}" name="disciplinas" value="{{ disciplina[0] }}"
-                                   {% if disciplina[0] in curso_disciplinas %} checked {% endif %}>
-                            <label for="disciplina_{{ disciplina[0] }}">{{ disciplina[1] }}</label>
-                        </div>
-                    {% endfor %}
+                    {% if todas_disciplinas %}
+                        {% for disciplina in todas_disciplinas %}
+                            <div class="disciplina-item">
+                                <input type="checkbox" id="disciplina_{{ disciplina[0] }}" name="disciplinas" value="{{ disciplina[0] }}"
+                                       {% if disciplina[0] in disciplinas_curso %} checked {% endif %}>
+                                <label for="disciplina_{{ disciplina[0] }}">{{ disciplina[1] }}</label>
+                            </div>
+                        {% endfor %}
+                    {% else %}
+                        <p>Não há disciplinas cadastradas.</p>
+                    {% endif %}
                 </div>
             </div>
             

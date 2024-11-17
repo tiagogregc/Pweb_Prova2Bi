@@ -1,0 +1,51 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<main>
+    <div class="container">
+        <h1>Lista de Alunos</h1>
+        <a href="{{ url_for('cadastrar_aluno') }}" class="btn btn-primary">Novo Aluno</a>
+        <table class="table">
+            <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>Nome</th>
+                    <th>CPF</th>
+                    <th>Endereço</th>
+                    <th>Cursos</th>
+                    <th>Ações</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for aluno in alunos %}
+                    <tr>
+                        <td>{{ aluno[0] }}</td>
+                        <td>{{ aluno[1] }}</td>
+                        <td>{{ aluno[2] }}</td>
+                        <td>{{ aluno[3] }}</td>
+                        <td>{{ aluno[5] if aluno[5] else 'Nenhum curso' }}</td>
+                        <td>
+                            <a href="{{ url_for('editar_aluno', id=aluno[0]) }}" class="btn">Editar</a>
+                            <a href="{{ url_for('confirmar_exclusao', id=aluno[0]) }}" class="btn" style="background-color: #d9534f;">Excluir</a>
+                        </td>
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+
+    <!-- Modal de confirmação de exclusão -->
+    {% if aluno_id_excluir %}
+    <div class="modal show">
+        <div class="modal-content">
+            <h4>Confirmar Exclusão</h4>
+            <p>Tem certeza que deseja excluir o aluno <strong>{{ aluno_nome }}</strong>?</p>
+            <form method="POST">
+                <button type="submit" class="btn btn-danger">Sim, excluir</button>
+            </form>
+            <a href="{{ url_for('listar_alunos') }}" class="btn btn-primary" style="margin-left: 10px;">Cancelar</a>
+        </div>
+    </div>
+    {% endif %}
+</main>
+{% endblock %}

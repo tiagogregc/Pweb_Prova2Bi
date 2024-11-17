@@ -51,14 +51,33 @@ def editar_disciplina(id):
     db.close()
     return render_template('editar_disciplina.html', disciplina=disciplina)
 
-@app.route('/disciplinas/excluir/<int:id>', methods=['POST'])
-def excluir_disciplina(id):
+# Rota para confirmar a exclusão da disciplina
+@app.route('/disciplinas/confirmar_exclusao/<int:id>', methods=['GET', 'POST'])
+def confirmar_exclusao_disciplina(id):
     db = get_db_connection()
     cursor = db.cursor()
-    cursor.execute("DELETE FROM Tiago_Carvalho_tbdisciplinas WHERE id=%s", (id,))
-    db.commit()
+
+    # Buscar o nome da disciplina para exibir na modal
+    cursor.execute("SELECT nome FROM Tiago_Carvalho_tbdisciplinas WHERE id=%s", (id,))
+    disciplina = cursor.fetchone()
+
+    if not disciplina:
+        db.close()
+        return redirect(url_for('listar_disciplinas'))
+
+    disciplina_nome = disciplina[0]
+    
+    # Verificar se a requisição é POST (excluir)
+    if request.method == 'POST':
+        # Excluir a disciplina
+        cursor.execute("DELETE FROM Tiago_Carvalho_tbdisciplinas WHERE id=%s", (id,))
+        db.commit()
+        db.close()
+        return redirect(url_for('listar_disciplinas'))
+
+    # Exibir a modal com o nome da disciplina
     db.close()
-    return redirect(url_for('listar_disciplinas'))
+    return render_template('listar_disciplinas.html', disciplina_id_excluir=id, disciplina_nome=disciplina_nome)
 
 # Rotas para cursos
 @app.route('/cursos')
@@ -105,33 +124,68 @@ def novo_curso():
 def editar_curso(id):
     db = get_db_connection()
     cursor = db.cursor()
+    
+    # Buscando todas as disciplinas
     cursor.execute("SELECT * FROM Tiago_Carvalho_tbdisciplinas")
     todas_disciplinas = cursor.fetchall()
+
     if request.method == 'POST':
         nome = request.form['nome']
         disciplinas_selecionadas = request.form.getlist('disciplinas')
+        
+        # Atualizando o nome do curso
         cursor.execute("UPDATE Tiago_Carvalho_tb_cursos SET nome=%s WHERE id=%s", (nome, id))
+        
+        # Removendo as disciplinas antigas associadas ao curso
         cursor.execute("DELETE FROM Tiago_Carvalho_tb_curso_disciplinas WHERE curso_id=%s", (id,))
+        
+        # Adicionando as disciplinas selecionadas
         for disciplina_id in disciplinas_selecionadas:
             cursor.execute("INSERT INTO Tiago_Carvalho_tb_curso_disciplinas (curso_id, disciplina_id) VALUES (%s, %s)", (id, disciplina_id))
+        
         db.commit()
         db.close()
         return redirect(url_for('listar_cursos'))
+    
+    # Buscando o curso atual
     cursor.execute("SELECT * FROM Tiago_Carvalho_tb_cursos WHERE id=%s", (id,))
     curso = cursor.fetchone()
+
+    # Buscando as disciplinas associadas ao curso
     cursor.execute("SELECT disciplina_id FROM Tiago_Carvalho_tb_curso_disciplinas WHERE curso_id=%s", (id,))
     disciplinas_curso = [row[0] for row in cursor.fetchall()]
+    
     db.close()
+    
     return render_template('editar_curso.html', curso=curso, todas_disciplinas=todas_disciplinas, disciplinas_curso=disciplinas_curso)
 
-@app.route('/cursos/excluir/<int:id>', methods=['POST'])
-def excluir_curso(id):
+# Rota para confirmar a exclusão do curso
+@app.route('/cursos/confirmar_exclusao/<int:id>', methods=['GET', 'POST'])
+def confirmar_exclusao_curso(id):
     db = get_db_connection()
     cursor = db.cursor()
-    cursor.execute("DELETE FROM Tiago_Carvalho_tb_cursos WHERE id=%s", (id,))
-    db.commit()
+
+    # Buscar o nome do curso para exibir na modal
+    cursor.execute("SELECT nome FROM Tiago_Carvalho_tb_cursos WHERE id=%s", (id,))
+    curso = cursor.fetchone()
+
+    if not curso:
+        db.close()
+        return redirect(url_for('listar_cursos'))
+
+    curso_nome = curso[0]
+    
+    # Verificar se a requisição é POST (excluir)
+    if request.method == 'POST':
+        # Excluir o curso
+        cursor.execute("DELETE FROM Tiago_Carvalho_tb_cursos WHERE id=%s", (id,))
+        db.commit()
+        db.close()
+        return redirect(url_for('listar_cursos'))
+
+    # Exibir a modal com o nome do curso
     db.close()
-    return redirect(url_for('listar_cursos'))
+    return render_template('listar_cursos.html', curso_id_excluir=id, curso_nome=curso_nome)
 
 # Rotas para professores
 @app.route('/professores')
@@ -218,29 +272,47 @@ def excluir_professor(id):
 def listar_alunos():
     db = get_db_connection()
     cursor = db.cursor()
-    cursor.execute("SELECT * FROM Pedro_Mota_tb_alunos")
+    
+    # Buscar alunos e seus cursos
+    cursor.execute("""
+        SELECT a.id, a.nome, a.cpf, a.endereco, a.senha, GROUP_CONCAT(c.nome) AS cursos
+        FROM Tiago_Carvalho_tb_alunos a
+        LEFT JOIN Tiago_Carvalho_tb_alunos_cursos ac ON a.id = ac.aluno_id
+        LEFT JOIN Tiago_Carvalho_tb_cursos c ON ac.curso_id = c.id
+        GROUP BY a.id
+    """)
+    
     alunos = cursor.fetchall()
     db.close()
+    
     return render_template('listar_alunos.html', alunos=alunos)
 
 @app.route('/alunos/novo', methods=['GET', 'POST'])
-def novo_aluno():
+def cadastrar_aluno():
     db = get_db_connection()
     cursor = db.cursor()
     cursor.execute("SELECT * FROM Tiago_Carvalho_tb_cursos")
     cursos = cursor.fetchall()
+    
     if request.method == 'POST':
         nome = request.form['nome']
         cpf = request.form['cpf']
         endereco = request.form['endereco']
         senha = request.form['senha']
-        curso_id = request.form['curso_id']
-        cursor.execute("INSERT INTO Pedro_Mota_tb_alunos (nome, cpf, endereco, senha, curso_id) VALUES (%s, %s, %s, %s, %s)", (nome, cpf, endereco, senha, curso_id))
+        cursos_selecionados = request.form.getlist('curso_id')
+        
+        cursor.execute("INSERT INTO Tiago_Carvalho_tb_alunos (nome, cpf, endereco, senha) VALUES (%s, %s, %s, %s)", (nome, cpf, endereco, senha))
+        aluno_id = cursor.lastrowid
+        
+        for curso_id in cursos_selecionados:
+            cursor.execute("INSERT INTO Tiago_Carvalho_tb_alunos_cursos (aluno_id, curso_id) VALUES (%s, %s)", (aluno_id, curso_id))
+        
         db.commit()
         db.close()
         return redirect(url_for('listar_alunos'))
+    
     db.close()
-    return render_template('novo_aluno.html', cursos=cursos)
+    return render_template('cadastrar_aluno.html', cursos=cursos)
 
 @app.route('/alunos/editar/<int:id>', methods=['GET', 'POST'])
 def editar_aluno(id):
@@ -248,29 +320,64 @@ def editar_aluno(id):
     cursor = db.cursor()
     cursor.execute("SELECT * FROM Tiago_Carvalho_tb_cursos")
     cursos = cursor.fetchall()
+    
     if request.method == 'POST':
         nome = request.form['nome']
         cpf = request.form['cpf']
         endereco = request.form['endereco']
         senha = request.form['senha']
-        curso_id = request.form['curso_id']
-        cursor.execute("UPDATE Pedro_Mota_tb_alunos SET nome=%s, cpf=%s, endereco=%s, senha=%s, curso_id=%s WHERE id=%s", (nome, cpf, endereco, senha, curso_id, id))
+        cursos_selecionados = request.form.getlist('curso_id')  # Obter múltiplos cursos
+        
+        # Atualizar os dados do aluno na tabela Tiago_Carvalho_tb_alunos
+        cursor.execute("UPDATE Tiago_Carvalho_tb_alunos SET nome=%s, cpf=%s, endereco=%s, senha=%s WHERE id=%s", (nome, cpf, endereco, senha, id))
+        
+        # Remover cursos antigos associados ao aluno
+        cursor.execute("DELETE FROM Tiago_Carvalho_tb_alunos_cursos WHERE aluno_id=%s", (id,))
+        
+        # Adicionar os cursos selecionados
+        for curso_id in cursos_selecionados:
+            cursor.execute("INSERT INTO Tiago_Carvalho_tb_alunos_cursos (aluno_id, curso_id) VALUES (%s, %s)", (id, curso_id))
+        
         db.commit()
         db.close()
         return redirect(url_for('listar_alunos'))
-    cursor.execute("SELECT * FROM Pedro_Mota_tb_alunos WHERE id=%s", (id,))
+    
+    cursor.execute("SELECT * FROM Tiago_Carvalho_tb_alunos WHERE id=%s", (id,))
     aluno = cursor.fetchone()
+    
+    # Carregar cursos do aluno (selecionados previamente)
+    cursor.execute("SELECT curso_id FROM Tiago_Carvalho_tb_alunos_cursos WHERE aluno_id=%s", (id,))
+    cursos_aluno = [curso[0] for curso in cursor.fetchall()]
+    
     db.close()
-    return render_template('editar_aluno.html', aluno=aluno, cursos=cursos)
+    return render_template('editar_aluno.html', aluno=aluno, cursos=cursos, cursos_aluno=cursos_aluno)
 
-@app.route('/alunos/excluir/<int:id>', methods=['POST'])
-def excluir_aluno(id):
+@app.route('/alunos/confirmar_exclusao/<int:id>', methods=['GET', 'POST'])
+def confirmar_exclusao(id):
     db = get_db_connection()
     cursor = db.cursor()
-    cursor.execute("DELETE FROM Pedro_Mota_tb_alunos WHERE id=%s", (id,))
-    db.commit()
+
+    cursor.execute("SELECT * FROM Tiago_Carvalho_tb_alunos WHERE id=%s", (id,))
+    aluno = cursor.fetchone()
+
+    aluno_id = aluno[0]
+    aluno_nome = aluno[1]
+
+    if request.method == 'POST':
+        # Remover os registros da tabela de relacionamento entre aluno e cursos
+        cursor.execute("DELETE FROM Tiago_Carvalho_tb_alunos_cursos WHERE aluno_id=%s", (id,))
+        
+        # Remover o aluno da tabela Tiago_Carvalho_tb_alunos
+        cursor.execute("DELETE FROM Tiago_Carvalho_tb_alunos WHERE id=%s", (id,))
+        
+        db.commit()
+        db.close()
+        return redirect(url_for('listar_alunos'))
+
     db.close()
-    return redirect(url_for('listar_alunos'))
+
+    # Passar os dados para o template da modal
+    return render_template('listar_alunos.html', aluno_id_excluir=id, aluno_nome=aluno_nome)
 
 if __name__ == '__main__':
     app.run(debug=True)

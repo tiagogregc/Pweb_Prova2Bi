@@ -5,9 +5,8 @@
 {% block content %}
     <div class="container">
         <h1>Disciplinas</h1>
-        <a href="{{ url_for('cadastrar_disciplina') }}" class="btn">Nova Disciplina</a>
-        {% if disciplinas %}
-        <table>
+        <a href="{{ url_for('cadastrar_disciplina') }}" class="btn btn-primary">Nova Disciplina</a>
+        <table class="table">
             <thead>
                 <tr>
                     <th>ID</th>
@@ -24,16 +23,25 @@
                     <td>{{ disciplina[2] }}</td>
                     <td>
                         <a href="{{ url_for('editar_disciplina', id=disciplina[0]) }}" class="btn">Editar</a>
-                        <form action="{{ url_for('excluir_disciplina', id=disciplina[0]) }}" method="post" style="display:inline;">
-                            <button type="submit" class="btn" style="background-color: #d9534f;">Excluir</button>
-                        </form>
+                        <a href="{{ url_for('confirmar_exclusao_disciplina', id=disciplina[0]) }}" class="btn" style="background-color: #d9534f;">Excluir</a>
                     </td>
                 </tr>
                 {% endfor %}
             </tbody>
         </table>
-        {% else %}
-        <p>Não há disciplinas cadastradas no momento.</p>
-        {% endif %}
     </div>
+
+    <!-- Modal de confirmação de exclusão -->
+    {% if disciplina_id_excluir %}
+    <div class="modal show">
+        <div class="modal-content">
+            <h4>Confirmar Exclusão</h4>
+            <p>Tem certeza que deseja excluir a disciplina <strong>{{ disciplina_nome }}</strong>?</p>
+            <form method="POST">
+                <button type="submit" class="btn btn-danger">Sim, excluir</button>
+            </form>
+            <a href="{{ url_for('listar_disciplinas') }}" class="btn btn-primary" style="margin-left: 10px;">Cancelar</a>
+        </div>
+    </div>
+    {% endif %}
 {% endblock %}
