@@ -258,14 +258,32 @@ def editar_professor(id):
     db.close()
     return render_template('editar_professor.html', professor=professor, todas_disciplinas=todas_disciplinas, disciplinas_professor=disciplinas_professor)
 
-@app.route('/professores/excluir/<int:id>', methods=['POST'])
-def excluir_professor(id):
+@app.route('/professores/confirmar_exclusao/<int:id>', methods=['GET', 'POST'])
+def confirmar_exclusao_professor(id):
     db = get_db_connection()
     cursor = db.cursor()
-    cursor.execute("DELETE FROM Tiago_Carvalho_tb_professores WHERE id=%s", (id,))
-    db.commit()
+
+    # Buscar o nome do professor para exibir na modal
+    cursor.execute("SELECT nome FROM Tiago_Carvalho_tb_professores WHERE id=%s", (id,))
+    professor = cursor.fetchone()
+
+    if not professor:
+        db.close()
+        return redirect(url_for('listar_professores'))
+
+    professor_nome = professor[0]
+    
+    # Verificar se a requisição é POST (excluir)
+    if request.method == 'POST':
+        # Excluir o professor
+        cursor.execute("DELETE FROM Tiago_Carvalho_tb_professores WHERE id=%s", (id,))
+        db.commit()
+        db.close()
+        return redirect(url_for('listar_professores'))
+
+    # Exibir a modal com o nome do professor
     db.close()
-    return redirect(url_for('listar_professores'))
+    return render_template('listar_professores.html', professor_id_excluir=id, professor_nome=professor_nome)
 
 # Rotas para alunos
 @app.route('/alunos')

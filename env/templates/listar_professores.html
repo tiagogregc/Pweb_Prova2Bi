@@ -32,14 +32,26 @@
                         </td>
                         <td>
                             <a href="{{ url_for('editar_professor', id=professor[0]) }}" class="btn">Editar</a>
-                            <form action="{{ url_for('excluir_professor', id=professor[0]) }}" method="POST" style="display:inline;">
-                                <button type="submit" class="btn" style="background-color: #d9534f;">Excluir</button>
-                            </form>
+                            <a href="{{ url_for('confirmar_exclusao_professor', id=professor[0]) }}" class="btn" style="background-color: #d9534f;">Excluir</a>
                         </td>
                     </tr>
                 {% endfor %}
             </tbody>
         </table>
     </div>
+
+    <!-- Modal de confirmação de exclusão -->
+    {% if professor_id_excluir %}
+    <div class="modal show">
+        <div class="modal-content">
+            <h4>Confirmar Exclusão</h4>
+            <p>Tem certeza que deseja excluir o professor <strong>{{ professor_nome }}</strong>?</p>
+            <form method="POST">
+                <button type="submit" class="btn btn-danger">Sim, excluir</button>
+            </form>
+            <a href="{{ url_for('listar_professores') }}" class="btn btn-primary" style="margin-left: 10px;">Cancelar</a>
+        </div>
+    </div>
+    {% endif %}
 </main>
 {% endblock %}
