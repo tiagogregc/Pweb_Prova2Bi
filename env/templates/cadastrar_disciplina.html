@@ -1,0 +1,21 @@
+{% extends 'base.html' %}
+
+{% block title %}Cadastrar Disciplina{% endblock %}
+
+{% block content %}
+    <div class="container">
+        <h1>Cadastro de Disciplina</h1>
+        <form action="{{ url_for('cadastrar_disciplina') }}" method="post">
+            <div class="form-group">
+                <label for="nome">Nome</label>
+                <input type="text" id="nome" name="nome" required>
+            </div>
+            <div class="form-group">
+                <label for="carga_horaria">Carga Horária</label>
+                <input type="number" id="carga_horaria" name="carga_horaria" required>
+            </div>
+            <button type="submit" class="btn">Salvar</button>
+            <a href="{{ url_for('listar_disciplinas') }}" class="btn">Voltar</a>
+        </form>
+    </div>
+{% endblock %}

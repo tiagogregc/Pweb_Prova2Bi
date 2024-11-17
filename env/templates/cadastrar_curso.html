@@ -1,0 +1,27 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<main>
+    <div class="container">
+        <h1>Cadastro de Curso</h1>
+        <form action="/cursos/novo" method="post">
+            <div class="form-group">
+                <label for="nome">Nome</label>
+                <input type="text" id="nome" name="nome" class="form-control" required>
+            </div>
+            <div class="form-group">
+                <label for="disciplinas">Disciplinas</label>
+                <div class="disciplinas-container">
+                    {% for disciplina in disciplinas %}
+                        <div class="disciplina-item">
+                            <input type="checkbox" name="disciplinas" value="{{ disciplina[0] }}">
+                            <label for="disciplina_{{ disciplina[0] }}">{{ disciplina[1] }}</label>
+                        </div>
+                    {% endfor %}
+                </div>
+            </div>
+            <button type="submit" class="btn">Salvar</button>
+        </form>
+    </div>
+</main>
+{% endblock %}

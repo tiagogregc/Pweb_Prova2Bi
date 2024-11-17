@@ -1,0 +1,45 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<main>
+    <div class="container">
+        <h1>Lista de Professores</h1>
+        <a href="{{ url_for('novo_professor') }}" class="btn">Novo Professor</a>
+        <table class="table">
+            <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>Nome</th>
+                    <th>Telefone</th>
+                    <th>Usuário</th>
+                    <th>Disciplinas</th>
+                    <th>Ações</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for professor, disciplinas in professores_com_disciplinas %}
+                    <tr>
+                        <td>{{ professor[0] }}</td>
+                        <td>{{ professor[1] }}</td>
+                        <td>{{ professor[2] }}</td>
+                        <td>{{ professor[3] }}</td>
+                        <td>
+                            {% if disciplinas %}
+                                {{ disciplinas | join(', ') }}
+                            {% else %}
+                                Nenhuma disciplina
+                            {% endif %}
+                        </td>
+                        <td>
+                            <a href="{{ url_for('editar_professor', id=professor[0]) }}" class="btn">Editar</a>
+                            <form action="{{ url_for('excluir_professor', id=professor[0]) }}" method="POST" style="display:inline;">
+                                <button type="submit" class="btn">Excluir</button>
+                            </form>
+                        </td>
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</main>
+{% endblock %}

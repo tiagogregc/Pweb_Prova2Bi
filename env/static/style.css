@@ -1,0 +1,193 @@
+/* Estilo global */
+body {
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+    background-color: #f4f4f4;
+    color: #333;
+}
+
+/* Header */
+h1, h2 {
+    color: #444;
+    text-align: center;
+    margin: 20px 0;
+}
+
+/* Botões */
+button, a.btn {
+    display: inline-block;
+    padding: 10px 15px;
+    margin: 5px;
+    font-size: 16px;
+    color: white;
+    background-color: #555;
+    border: none;
+    text-decoration: none;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+button:hover, a.btn:hover {
+    background-color: #777;
+}
+
+/* Container */
+.container {
+    max-width: 800px;
+    margin: 20px auto;
+    background-color: #fff;
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+/* Formulários */
+.form-group {
+    margin-bottom: 15px;
+}
+
+.form-group label {
+    display: block;
+    margin-bottom: 5px;
+    font-weight: bold;
+}
+
+.form-group input {
+    width: 100%;
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    font-size: 14px;
+}
+
+/* Tabela */
+table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 20px;
+}
+
+table th, table td {
+    text-align: left;
+    padding: 10px;
+    border: 1px solid #ddd;
+}
+
+table th {
+    background-color: #666;
+    color: #fff;
+}
+
+table tr:nth-child(even) {
+    background-color: #f9f9f9;
+}
+
+/* Cabeçalho */
+header {
+    background-color: #333;
+    padding: 10px 20px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    position: fixed;
+    width: 100%;
+    top: 0;
+    z-index: 1000;
+}
+
+header nav {
+    display: flex;
+    justify-content: flex-start; /* Alinhado à esquerda */
+    align-items: center;
+    padding: 0 20px;
+}
+
+header nav a {
+    color: white;
+    margin: 0 15px;
+    text-decoration: none;
+    font-size: 18px;
+    padding: 12px 20px;
+}
+
+header nav a:hover {
+    background-color: #444;
+    border-radius: 4px;
+}
+
+/* Main content */
+main {
+    margin-top: 60px; /* Para evitar sobreposição com o cabeçalho fixo */
+    padding: 20px;
+}
+
+/* Estilo geral */
+body {
+    font-family: Arial, sans-serif;
+    background-color: #f4f4f4;
+    color: #333;
+}
+
+/* Botões da página principal */
+.form-group {
+    text-align: center; /* Centralizar os botões */
+    margin-top: 50px;
+}
+
+.form-group .btn {
+    font-size: 20px; /* Aumentar a fonte dos botões */
+    padding: 20px 40px; /* Aumentar o tamanho dos botões */
+    margin: 10px;
+    border-radius: 6px;
+    background-color: #5bc0de;
+    color: white;
+    border: none;
+    text-decoration: none;
+}
+
+.form-group .btn:hover {
+    background-color: #31b0d5;
+}
+
+/* Estilo da tabela */
+.table {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+.table th, .table td {
+    padding: 10px;
+    text-align: left;
+    border-bottom: 1px solid #ddd;
+}
+
+.disciplinas-container {
+    display: flex;
+    flex-wrap: wrap; 
+    gap: 20px; 
+}
+
+.disciplina-item {
+    width: 18%; 
+    min-width: 150px; 
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+}
+
+.disciplina-item input[type="checkbox"] {
+    margin-right: 8px; 
+}
+
+
+@media (max-width: 768px) {
+    .disciplina-item {
+        width: 45%; 
+    }
+}
+
+@media (max-width: 480px) {
+    .disciplina-item {
+        width: 100%;
+    }
+}

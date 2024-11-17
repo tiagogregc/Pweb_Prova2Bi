@@ -1,0 +1,14 @@
+{% extends 'base.html' %}
+
+{% block title %}Home{% endblock %}
+
+{% block content %}
+    <h1>Página Principal</h1>
+    <h2>Sistema de Gestão Escolar</h2>
+    <div class="form-group" style="margin: 10px;">
+        <a href="/disciplinas" class="btn btn-primary">Disciplinas</a>
+        <a href="/cursos" class="btn btn-primary">Cursos</a>
+        <a href="/professores" class="btn btn-primary">Professores</a>
+        <a href="/" class="btn btn-primary">Alunos</a>
+    </div>
+{% endblock %}

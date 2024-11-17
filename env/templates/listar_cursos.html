@@ -1,0 +1,38 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<main>
+    <div class="container">
+        <h1>Lista de Cursos</h1>
+        <table>
+            <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>Nome</th>
+                    <th>Disciplinas</th>
+                    <th>Ações</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for curso in cursos %}
+                    <tr>
+                        <td>{{ curso[0] }}</td>
+                        <td>{{ curso[1] }}</td>
+                        <td>{{ curso[2] if curso[2] else 'Nenhuma disciplina' }}</td>
+                        <td>
+                            <!-- Rota para editar o curso -->
+                            <a href="{{ url_for('editar_curso', id=curso[0]) }}" class="btn">Editar</a>
+                            
+                            <!-- Formulário para excluir o curso -->
+                            <form action="{{ url_for('excluir_curso', id=curso[0]) }}" method="post" style="display:inline;">
+                                <button type="submit" class="btn">Excluir</button>
+                            </form>
+                        </td>
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</main>
+{% endblock %}
+
