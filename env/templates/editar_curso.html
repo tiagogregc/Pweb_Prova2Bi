@@ -4,24 +4,30 @@
 <main>
     <div class="container">
         <h1>Editar Curso</h1>
-        <form action="/cursos/editar/{{ curso[0] }}" method="post">
+        
+        <form action="{{ url_for('editar_curso', id=curso[0]) }}" method="POST" class="form-container">
             <div class="form-group">
-                <label for="nome">Nome</label>
+                <label for="nome">Nome do Curso</label>
                 <input type="text" id="nome" name="nome" class="form-control" value="{{ curso[1] }}" required>
             </div>
+            
             <div class="form-group">
-                <label for="disciplinas">Disciplinas</label>
+                <label>Disciplinas</label>
                 <div class="disciplinas-container">
-                    {% for disciplina in todas_disciplinas %}
+                    {% for disciplina in disciplinas %}
                         <div class="disciplina-item">
-                            <input type="checkbox" name="disciplinas" value="{{ disciplina[0] }}"
-                                   {% if disciplina[0] in disciplinas_curso %} checked {% endif %}>
+                            <input type="checkbox" id="disciplina_{{ disciplina[0] }}" name="disciplinas" value="{{ disciplina[0] }}"
+                                   {% if disciplina[0] in curso_disciplinas %} checked {% endif %}>
                             <label for="disciplina_{{ disciplina[0] }}">{{ disciplina[1] }}</label>
                         </div>
                     {% endfor %}
                 </div>
             </div>
-            <button type="submit" class="btn">Salvar</button>
+            
+            <div class="form-group">
+                <button type="submit" class="btn">Salvar</button>
+                <a href="{{ url_for('listar_cursos') }}" class="btn btn-secondary">Voltar</a>
+            </div>
         </form>
     </div>
 </main>

@@ -4,7 +4,7 @@
 <main>
     <div class="container">
         <h1>Editar Professor</h1>
-        <form action="{{ url_for('editar_professor', id=professor[0]) }}" method="post">
+        <form action="{{ url_for('editar_professor', id=professor[0]) }}" method="post" class="form-container">
             <div class="form-group">
                 <label for="nome">Nome</label>
                 <input type="text" id="nome" name="nome" class="form-control" value="{{ professor[1] }}" required>
@@ -22,11 +22,19 @@
                 <input type="password" id="senha" name="senha" class="form-control" value="{{ professor[4] }}" required>
             </div>
             <div class="form-group">
-                <label for="disciplinas">Disciplinas</label><br>
-                {% for disciplina in todas_disciplinas %}
-                    <input type="checkbox" name="disciplinas" value="{{ disciplina[0] }}" 
-                        {% if disciplina[0] in disciplinas_professor %} checked {% endif %}> {{ disciplina[1] }}<br>
-                {% endfor %}
+                <label for="disciplinas">Disciplinas</label>
+                <div class="checkbox-group">
+                    {% for disciplina in todas_disciplinas %}
+                        <div class="checkbox-item">
+                            <input type="checkbox" name="disciplinas" value="{{ disciplina[0] }}"
+                                   {% if disciplina[0] in disciplinas_professor %} checked {% endif %}>
+                            {{ disciplina[1] }}
+                        </div>
+                        {% if loop.index % 5 == 0 %}
+                            <div style="clear: both;"></div>
+                        {% endif %}
+                    {% endfor %}
+                </div>
             </div>
             <button type="submit" class="btn">Salvar</button>
         </form>

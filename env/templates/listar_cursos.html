@@ -4,7 +4,12 @@
 <main>
     <div class="container">
         <h1>Lista de Cursos</h1>
-        <table>
+        
+        <!-- Botão para cadastrar um novo curso -->
+        <a href="{{ url_for('novo_curso') }}" class="btn">Novo Curso</a>
+        
+        <!-- Tabela de cursos -->
+        <table class="table">
             <thead>
                 <tr>
                     <th>ID</th>
@@ -25,7 +30,7 @@
                             
                             <!-- Formulário para excluir o curso -->
                             <form action="{{ url_for('excluir_curso', id=curso[0]) }}" method="post" style="display:inline;">
-                                <button type="submit" class="btn">Excluir</button>
+                                <button type="submit" class="btn" style="background-color: #d9534f;">Excluir</button>
                             </form>
                         </td>
                     </tr>
@@ -35,4 +40,3 @@
     </div>
 </main>
 {% endblock %}
-

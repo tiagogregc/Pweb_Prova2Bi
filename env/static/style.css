@@ -35,15 +35,24 @@ button:hover, a.btn:hover {
 
 /* Container */
 .container {
-    max-width: 800px;
+    max-width: 900px;
     margin: 20px auto;
     background-color: #fff;
-    padding: 20px;
+    padding: 30px;
     border-radius: 8px;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
 }
 
 /* Formulários */
+.form-container {
+    padding: 20px;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    background-color: #f9f9f9;
+    max-width: 700px;
+    margin: auto;
+}
+
 .form-group {
     margin-bottom: 15px;
 }
@@ -54,12 +63,36 @@ button:hover, a.btn:hover {
     font-weight: bold;
 }
 
-.form-group input {
+.form-group input, 
+.form-group select, 
+.form-group textarea {
     width: 100%;
     padding: 10px;
+    margin-top: 5px;
     border: 1px solid #ccc;
     border-radius: 4px;
     font-size: 14px;
+    box-sizing: border-box;
+}
+
+/* Estilo específico para checkboxes */
+.disciplinas-container {
+    display: flex;
+    flex-wrap: wrap; 
+    gap: 15px; 
+    margin-top: 10px;
+}
+
+.disciplina-item {
+    width: 18%; 
+    min-width: 150px; 
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+}
+
+.disciplina-item input[type="checkbox"] {
+    margin-right: 8px; 
 }
 
 /* Tabela */
@@ -82,6 +115,38 @@ table th {
 
 table tr:nth-child(even) {
     background-color: #f9f9f9;
+}
+
+/* Ajustes de mídia */
+@media (max-width: 768px) {
+    .disciplina-item {
+        width: 45%; 
+    }
+
+    .form-container {
+        padding: 15px;
+    }
+}
+
+@media (max-width: 480px) {
+    .disciplina-item {
+        width: 100%;
+    }
+}
+
+/* Botões adicionais */
+button.btn {
+    margin-top: 15px;
+    padding: 10px 15px;
+    background-color: #007bff;
+    color: #fff;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+}
+
+button.btn:hover {
+    background-color: #0056b3;
 }
 
 /* Cabeçalho */
@@ -121,73 +186,45 @@ main {
     padding: 20px;
 }
 
-/* Estilo geral */
-body {
-    font-family: Arial, sans-serif;
-    background-color: #f4f4f4;
-    color: #333;
-}
-
-/* Botões da página principal */
-.form-group {
-    text-align: center; /* Centralizar os botões */
-    margin-top: 50px;
-}
-
-.form-group .btn {
-    font-size: 20px; /* Aumentar a fonte dos botões */
-    padding: 20px 40px; /* Aumentar o tamanho dos botões */
-    margin: 10px;
-    border-radius: 6px;
-    background-color: #5bc0de;
-    color: white;
-    border: none;
-    text-decoration: none;
-}
-
-.form-group .btn:hover {
-    background-color: #31b0d5;
-}
-
-/* Estilo da tabela */
-.table {
-    width: 100%;
-    border-collapse: collapse;
-}
-
-.table th, .table td {
-    padding: 10px;
-    text-align: left;
-    border-bottom: 1px solid #ddd;
-}
-
-.disciplinas-container {
+/* Centralização dos Botões */
+.button-group {
     display: flex;
-    flex-wrap: wrap; 
-    gap: 20px; 
+    justify-content: center;
+    gap: 30px; /* Maior espaçamento entre os botões */
+    flex-wrap: wrap;
+    margin-top: 40px;
 }
 
-.disciplina-item {
-    width: 18%; 
-    min-width: 150px; 
-    display: flex;
-    align-items: center;
-    justify-content: flex-start;
+/* Estilo dos Botões Grandes */
+.btn-large {
+    padding: 25px 50px !important; /* Aumenta o tamanho do botão */
+    font-size: 28px !important; /* Aumenta a fonte para 28px */
+    font-weight: bold !important; /* Texto em negrito */
+    color: white !important;
+    background-color: #555 !important; /* Cor cinza para o botão */
+    border: none !important;
+    text-decoration: none !important;
+    border-radius: 8px !important; /* Bordas arredondadas para maior suavidade */
+    cursor: pointer !important;
+    transition: background-color 0.3s ease !important;
+    display: inline-block !important;
 }
 
-.disciplina-item input[type="checkbox"] {
-    margin-right: 8px; 
+.btn-large:hover {
+    background-color: #777 !important; /* Cor mais escura ao passar o mouse */
 }
 
-
+/* Ajuste para garantir que os botões ainda fiquem responsivos */
 @media (max-width: 768px) {
-    .disciplina-item {
-        width: 45%; 
+    .btn-large {
+        padding: 20px 40px !important; /* Ajuste para telas menores */
+        font-size: 24px !important; /* Fonte reduzida para telas menores */
     }
 }
 
 @media (max-width: 480px) {
-    .disciplina-item {
-        width: 100%;
+    .btn-large {
+        padding: 15px 30px !important; /* Ajuste para telas ainda menores */
+        font-size: 20px !important; /* Fonte ainda menor para dispositivos muito pequenos */
     }
 }
